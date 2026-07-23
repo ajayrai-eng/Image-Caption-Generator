@@ -1,0 +1,41 @@
+# Python virtual environment
+venv/
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Uploaded images
+uploads/*
+
+# Dataset images and large dataset files
+dataset/images/
+dataset/*.jpg
+dataset/*.jpeg
+dataset/*.png
+
+# Colab files
+Colab_Upload.zip
+
+# Test images
+test.jpeg
+
+# IDE
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Colab training dataset
+Colab_Upload/
+
+static/uploads/*
+dataset/captions.pkl
+dataset/captions.txt
+dataset/features.pkl
+
+models/*.keras
