@@ -53,6 +53,14 @@ The uploaded image is first processed using VGG16 to extract meaningful visual f
 
 ---
 
+## 🖼️ Demo
+
+### VisionAI Web Application
+
+The VisionAI web application allows users to upload an image and generate an AI-powered natural-language caption using the trained image captioning model.
+
+![VisionAI Demo](screenshots/screenshot.png)
+
 ## 📂 Project Structure
 
 ```text
