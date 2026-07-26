@@ -76,6 +76,30 @@ The pretrained BLIP model allows the application to generate meaningful captions
 
 ---
 
+## 🖼️ Screenshots
+
+### 🏠 Home Page
+
+The VisionAI home page provides a simple and user-friendly interface for uploading images and generating AI-powered captions.
+
+![VisionAI Home Page](screenshots/UI.png)
+
+---
+
+### 📷 Image Upload / Camera
+
+Users can upload an image from their device or capture an image using the live camera feature.
+
+![VisionAI Image Upload and Camera](screenshots/IMG_1.png)
+
+---
+
+### 🤖 AI Generated Caption
+
+After processing the image using the Salesforce BLIP Transformer model, the application generates a natural-language caption describing the image.
+
+![VisionAI Generated Caption](screenshots/IMG_2.png)
+
 ## 📂 Project Structure
 
 ```text
