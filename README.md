@@ -1,20 +1,22 @@
 # VisionAI - AI Image Caption Generator
 
-VisionAI is an AI-powered Image Caption Generator that automatically analyzes an uploaded image and generates a natural-language description.
+VisionAI is an AI-powered Image Caption Generator that automatically analyzes images and generates natural-language descriptions using a state-of-the-art **BLIP Transformer model**.
 
-The project combines **Computer Vision** and **Natural Language Processing** using **VGG16** for image feature extraction and a **CNN-LSTM based deep learning model** for caption generation.
+The application is built using **Python, Flask, PyTorch, and Hugging Face Transformers**. It supports both **image upload** and **live camera capture** for generating captions.
 
 ---
 
 ## 🚀 Features
 
-- Upload images through a web interface
-- Generate captions automatically using AI
-- VGG16-based image feature extraction
-- CNN-LSTM deep learning architecture
+- Upload an image and generate an AI caption
+- Capture an image directly using a live camera
+- High-quality image caption generation using BLIP
+- Uses Salesforce BLIP Image Captioning model
+- Supports JPG, JPEG, PNG and WEBP images
 - Flask-based web application
 - Simple and user-friendly interface
-- Supports JPG, JPEG, PNG and WEBP images
+- CPU and GPU support
+- Real-time caption generation
 
 ---
 
@@ -22,44 +24,57 @@ The project combines **Computer Vision** and **Natural Language Processing** usi
 
 The system follows this pipeline:
 
-**Input Image**  
-↓  
-**VGG16 Feature Extraction**  
-↓  
-**Visual Feature Vector**  
-↓  
-**CNN-LSTM Caption Generation Model**  
-↓  
-**Generated Text Caption**
+**Input Image / Camera Image**
+↓
+**Image Preprocessing**
+↓
+**BLIP Processor**
+↓
+**Salesforce BLIP Transformer Model**
+↓
+**Caption Generation**
+↓
+**Natural Language Caption**
 
-The uploaded image is first processed using VGG16 to extract meaningful visual features. These features are then passed to the trained caption generation model, which predicts the caption word by word.
+The user can either upload an image or capture an image using the live camera.
+
+The image is converted into RGB format and processed by the BLIP processor. The processed image is then passed to the pretrained BLIP Transformer model, which generates a natural-language description of the image.
+
+---
+
+## 🤖 AI Model
+
+This project uses:
+
+**Salesforce BLIP - Image Captioning Base**
+
+Model:
+
+`Salesforce/blip-image-captioning-base`
+
+BLIP (Bootstrapping Language-Image Pre-training) is a vision-language model designed for tasks such as image captioning and visual question answering.
+
+The pretrained BLIP model allows the application to generate meaningful captions for previously unseen images without requiring the model to be trained from scratch.
 
 ---
 
 ## 🛠️ Technologies Used
 
 - Python
-- TensorFlow
-- Keras
-- VGG16
-- CNN
-- LSTM
 - Flask
-- NumPy
-- Pillow
+- PyTorch
+- Hugging Face Transformers
+- BLIP
+- Salesforce BLIP Image Captioning
+- Pillow (PIL)
 - HTML
 - CSS
 - JavaScript
+- Base64
+- Git
+- GitHub
 
 ---
-
-## 🖼️ Demo
-
-### VisionAI Web Application
-
-The VisionAI web application allows users to upload an image and generate an AI-powered natural-language caption using the trained image captioning model.
-
-![VisionAI Demo](screenshots/screenshot.png)
 
 ## 📂 Project Structure
 
@@ -67,22 +82,20 @@ The VisionAI web application allows users to upload an image and generate an AI-
 Image-Caption-Generator/
 │
 ├── app.py
-├── feature_extractor.py
-├── model_final.py
 ├── requirements.txt
 ├── README.md
-│
-├── dataset/
-│   ├── tokenizer.pkl
-│   └── max_length.pkl
-│
-├── models/
-│   └── model_weights.weights.h5
 │
 ├── templates/
 │   └── index.html
 │
 ├── static/
+│   └── ...
+│
+├── dataset/
+│   └── ...
+│
+├── models/
+│   └── ...
 │
 └── .gitignore
 ⚙️ Installation
@@ -99,6 +112,9 @@ For Windows:
 venv\Scripts\activate
 5. Install Dependencies
 pip install -r requirements.txt
+
+The required BLIP model will be downloaded automatically from Hugging Face during the first application startup.
+
 ▶️ Run the Application
 
 Start the Flask application:
@@ -112,45 +128,134 @@ http://127.0.0.1:5000
 Open this address in your web browser.
 
 🖼️ Usage
+Method 1: Upload an Image
 Open the VisionAI web application.
-Upload an image.
-Preview the selected image.
-Click on Generate Caption.
-The AI model processes the image.
+Select an image from your computer.
+Upload the image.
+Click the Generate Caption button.
+The BLIP AI model processes the image.
 The generated caption is displayed on the screen.
+Method 2: Live Camera
+Open the VisionAI web application.
+Allow camera permission when requested.
+Open the live camera interface.
+Capture an image.
+The captured image is sent to the Flask backend.
+The BLIP model analyzes the image.
+The generated caption is displayed.
+🔄 Application Workflow
+User
+ │
+ ├── Upload Image
+ │
+ └── Capture Image Using Camera
+          │
+          ▼
+      Flask Backend
+          │
+          ▼
+     Image Processing
+          │
+          ▼
+     BLIP Processor
+          │
+          ▼
+ Salesforce BLIP Model
+          │
+          ▼
+  Caption Generation
+          │
+          ▼
+   Generated Caption
+          │
+          ▼
+     User Interface
+🧩 Backend Architecture
+
+The Flask backend performs the following tasks:
+
+1. Model Loading
+
+The BLIP model and processor are loaded when the application starts.
+
+2. Image Input Handling
+
+The application supports two input methods:
+
+Multipart image file upload
+Base64 encoded camera image
+3. Image Processing
+
+Uploaded or captured images are converted into RGB format using Pillow.
+
+4. Caption Generation
+
+The processed image is passed to the BLIP Transformer model.
+
+5. Result Delivery
+
+The generated caption is returned to the frontend using a JSON response.
+
 🔬 Model Architecture
 
-The project uses a combination of Computer Vision and Deep Learning techniques.
+The project uses the BLIP (Bootstrapping Language-Image Pre-training) architecture for image caption generation.
 
-VGG16
+The model combines visual understanding and natural language generation.
 
-VGG16 is used as a feature extractor to convert the input image into a numerical feature representation.
+The workflow is:
 
-CNN
+Image
+  │
+  ▼
+Vision Encoder
+  │
+  ▼
+Visual Representation
+  │
+  ▼
+Language Generation Module
+  │
+  ▼
+Natural Language Caption
 
-CNN-based visual features help the system understand the visual information present in the image.
-
-LSTM
-
-The LSTM network generates the caption sequentially, predicting the next word based on the image features and previously generated words.
+Unlike the earlier CNN-LSTM implementation, the current version uses a pretrained Transformer-based vision-language model, providing better generalization to new and unseen images.
 
 📌 Current Status
 
-The current version of the project is a working prototype demonstrating end-to-end image caption generation.
+The current version of VisionAI is a working AI-powered image captioning prototype.
 
-The model can process an uploaded image and generate an automatically predicted caption through the Flask web application.
+The application can:
 
-The prediction quality can be further improved by training the model on larger and more diverse datasets and performing additional model optimization.
+Accept uploaded images
+Capture images using a live camera
+Process previously unseen images
+Generate natural-language captions
+Run locally using Flask
+Use CPU or GPU depending on available hardware
+
+The project currently uses the pretrained Salesforce BLIP image-captioning model.
 
 🔮 Future Scope
-Train the model using significantly larger image-caption datasets
-Improve caption accuracy and natural language quality
-Implement advanced Transformer-based architectures
+Improve caption accuracy and contextual understanding
 Add multilingual caption generation
 Add voice output for generated captions
 Deploy the application on a cloud platform
-Improve inference speed and scalability
-Add real-time image captioning using camera input
+Add real-time video captioning
+Add object detection and object recognition
+Add image question-answering functionality
+Add voice-based interaction
+Develop a mobile application
+Optimize inference speed
+Add support for multiple AI vision-language models
+Add accessibility features for visually impaired users
+📊 Advantages
+Works with previously unseen images
+Does not require manual caption creation
+Uses a pretrained state-of-the-art vision-language model
+Supports both image upload and live camera input
+Simple web-based interface
+Can run on CPU and GPU
+Easily extendable for future AI vision applications
 👨‍💻 Author
 
 Ajay Rai
