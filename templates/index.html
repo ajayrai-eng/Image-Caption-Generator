@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>VisionAI | Image Caption Generator</title>
-
     <style>
         * {
             margin: 0;
@@ -60,7 +58,7 @@
         /* HERO */
         .hero {
             text-align: center;
-            padding: 70px 20px 35px;
+            padding: 50px 20px 25px;
         }
 
         .hero-badge {
@@ -75,10 +73,10 @@
         }
 
         .hero h1 {
-            font-size: clamp(40px, 6vw, 72px);
+            font-size: clamp(36px, 5vw, 64px);
             line-height: 1.05;
-            margin-bottom: 22px;
-            letter-spacing: -2px;
+            margin-bottom: 18px;
+            letter-spacing: -1.5px;
         }
 
         .gradient-text {
@@ -91,14 +89,14 @@
             max-width: 700px;
             margin: auto;
             color: #aeb4c8;
-            font-size: 18px;
-            line-height: 1.7;
+            font-size: 17px;
+            line-height: 1.6;
         }
 
         /* MAIN CARD */
         .container {
             width: min(1000px, 92%);
-            margin: 35px auto 80px;
+            margin: 25px auto 80px;
         }
 
         .main-card {
@@ -110,42 +108,55 @@
             backdrop-filter: blur(20px);
         }
 
+        /* INPUT OPTIONS TABS */
+        .input-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            padding: 10px 22px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.04);
+            color: #aeb4c8;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 600;
+        }
+
+        .tab-btn.active {
+            background: rgba(124,140,255,0.2);
+            border-color: #7c8cff;
+            color: #ffffff;
+        }
+
         /* UPLOAD AREA */
         .upload-area {
             border: 2px dashed rgba(140,150,255,0.45);
             border-radius: 22px;
-            padding: 55px 25px;
+            padding: 45px 25px;
             text-align: center;
             cursor: pointer;
             transition: 0.3s;
             background: rgba(124,140,255,0.035);
         }
 
-        .upload-area:hover,
-        .upload-area.dragover {
+        .upload-area:hover, .upload-area.dragover {
             border-color: #8d9aff;
             background: rgba(124,140,255,0.09);
             transform: translateY(-2px);
         }
 
-        .upload-icon {
-            font-size: 55px;
-            margin-bottom: 15px;
-        }
-
-        .upload-area h2 {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-
-        .upload-area p {
-            color: #9da4b8;
-            margin-bottom: 22px;
-        }
+        .upload-icon { font-size: 50px; margin-bottom: 12px; }
+        .upload-area h2 { font-size: 22px; margin-bottom: 8px; }
+        .upload-area p { color: #9da4b8; margin-bottom: 20px; }
 
         .browse-btn {
             display: inline-block;
-            padding: 13px 28px;
+            padding: 12px 26px;
             border-radius: 12px;
             background: linear-gradient(135deg, #6978ff, #9a63ff);
             color: white;
@@ -154,20 +165,23 @@
             transition: 0.3s;
         }
 
-        .browse-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(120,100,255,0.3);
-        }
+        #imageInput { display: none; }
 
-        #imageInput {
+        /* CAMERA SECTION */
+        .camera-area {
             display: none;
+            text-align: center;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 22px;
+            background: rgba(0,0,0,0.2);
         }
 
-        .file-info {
-            margin-top: 15px;
-            color: #aeb4c8;
-            font-size: 14px;
-        }
+        .camera-area.active { display: block; }
+        #webcam { width: 100%; max-width: 500px; border-radius: 16px; background: #000; }
+        .cam-controls { margin-top: 15px; display: flex; justify-content: center; gap: 10px; }
+
+        .file-info { margin-top: 15px; color: #aeb4c8; font-size: 14px; }
 
         /* PREVIEW */
         .preview-section {
@@ -176,29 +190,19 @@
             text-align: center;
         }
 
-        .preview-section.show {
-            display: block;
-        }
-
-        .preview-section h3 {
-            margin-bottom: 15px;
-            color: #d9dded;
-        }
+        .preview-section.show { display: block; }
+        .preview-section h3 { margin-bottom: 15px; color: #d9dded; }
 
         #imagePreview {
             max-width: 100%;
-            max-height: 500px;
+            max-height: 400px;
             object-fit: contain;
             border-radius: 18px;
             border: 1px solid rgba(255,255,255,0.12);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
         }
 
         /* ACTION BUTTON */
-        .action-area {
-            text-align: center;
-            margin-top: 30px;
-        }
+        .action-area { text-align: center; margin-top: 30px; }
 
         .generate-btn {
             border: none;
@@ -210,7 +214,6 @@
             font-weight: 700;
             cursor: pointer;
             transition: 0.3s;
-            box-shadow: 0 12px 30px rgba(100,90,255,0.25);
         }
 
         .generate-btn:hover {
@@ -225,15 +228,8 @@
         }
 
         /* LOADING */
-        .loading {
-            display: none;
-            text-align: center;
-            margin-top: 30px;
-        }
-
-        .loading.show {
-            display: block;
-        }
+        .loading { display: none; text-align: center; margin-top: 30px; }
+        .loading.show { display: block; }
 
         .spinner {
             width: 45px;
@@ -245,16 +241,8 @@
             animation: spin 1s linear infinite;
         }
 
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .loading p {
-            margin-top: 15px;
-            color: #aeb4c8;
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading p { margin-top: 15px; color: #aeb4c8; }
 
         /* RESULT */
         .result {
@@ -262,29 +250,15 @@
             margin-top: 35px;
             padding: 30px;
             border-radius: 22px;
-            background: linear-gradient(
-                135deg,
-                rgba(124,140,255,0.10),
-                rgba(210,138,255,0.06)
-            );
+            background: linear-gradient(135deg, rgba(124,140,255,0.10), rgba(210,138,255,0.06));
             border: 1px solid rgba(140,150,255,0.2);
         }
 
-        .result.show {
-            display: block;
-            animation: fadeUp 0.5s ease;
-        }
+        .result.show { display: block; animation: fadeUp 0.5s ease; }
 
         @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(15px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .result-header {
@@ -292,10 +266,6 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
-        }
-
-        .result-header h2 {
-            font-size: 22px;
         }
 
         .ai-tag {
@@ -314,11 +284,7 @@
             margin-bottom: 25px;
         }
 
-        .result-actions {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
+        .result-actions { display: flex; gap: 12px; flex-wrap: wrap; }
 
         .secondary-btn {
             padding: 11px 20px;
@@ -330,15 +296,13 @@
             transition: 0.3s;
         }
 
-        .secondary-btn:hover {
-            background: rgba(255,255,255,0.12);
-        }
+        .secondary-btn:hover { background: rgba(255,255,255,0.12); }
 
         /* INFO SECTION */
         .info-section {
             margin-top: 35px;
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(2, 1fr);
             gap: 18px;
         }
 
@@ -349,22 +313,9 @@
             border: 1px solid rgba(255,255,255,0.08);
         }
 
-        .info-card .icon {
-            font-size: 28px;
-            margin-bottom: 12px;
-        }
+        .info-card .icon { font-size: 28px; margin-bottom: 12px; }
+        .info-card p { color: #989fb3; line-height: 1.6; font-size: 14px; }
 
-        .info-card h3 {
-            margin-bottom: 8px;
-        }
-
-        .info-card p {
-            color: #989fb3;
-            line-height: 1.6;
-            font-size: 14px;
-        }
-
-        /* FOOTER */
         footer {
             text-align: center;
             padding: 30px;
@@ -373,728 +324,261 @@
             font-size: 14px;
         }
 
-        /* RESPONSIVE */
         @media (max-width: 700px) {
-
-            .navbar {
-                padding: 18px 5%;
-            }
-
-            .hero {
-                padding-top: 50px;
-            }
-
-            .main-card {
-                padding: 20px;
-            }
-
-            .upload-area {
-                padding: 40px 15px;
-            }
-
-            .info-section {
-                grid-template-columns: 1fr;
-            }
-
-            .result-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
+            .info-section { grid-template-columns: 1fr; }
         }
     </style>
 </head>
-
 <body>
 
-<!-- NAVBAR -->
 <nav class="navbar">
-
-    <div class="logo">
-        Vision<span>AI</span>
-    </div>
-
-    <div class="nav-badge">
-        AI-Powered Image Captioning
-    </div>
-
+    <div class="logo">Vision<span>AI</span></div>
+    <div class="nav-badge">AI-Powered Image Captioning</div>
 </nav>
 
-
-<!-- HERO -->
 <section class="hero">
-
-    <div class="hero-badge">
-        ✨ CNN + LSTM Deep Learning
-    </div>
-
-    <h1>
-        Turn Images Into
-        <span class="gradient-text">Meaningful Words</span>
-    </h1>
-
-    <p>
-        Upload an image and let our AI-powered image captioning system
-        analyze the visual content and generate a natural-language
-        description automatically.
-    </p>
-
+    <div class="hero-badge">✨ Transformer Neural Network</div>
+    <h1>Turn Images Into <span class="gradient-text">Meaningful Words</span></h1>
+    <p>Upload an image or use your camera to generate natural language descriptions using Salesforce BLIP.</p>
 </section>
 
-
-<!-- MAIN -->
 <div class="container">
-
     <div class="main-card">
 
-        <!-- UPLOAD -->
-        <div class="upload-area" id="uploadArea">
-
-            <div class="upload-icon">🖼️</div>
-
-            <h2>Upload Your Image</h2>
-
-            <p>
-                Drag & drop an image here or browse from your device
-            </p>
-
-            <label for="imageInput" class="browse-btn">
-                Choose Image
-            </label>
-
-            <input
-                type="file"
-                id="imageInput"
-                name="image"
-                accept="image/*"
-            >
-
-            <div class="file-info" id="fileInfo">
-                Supported formats: JPG, JPEG, PNG
-            </div>
-
+        <!-- INPUT TABS -->
+        <div class="input-tabs">
+            <button class="tab-btn active" id="tabUpload" onclick="switchTab('upload')">📁 Upload File</button>
+            <button class="tab-btn" id="tabCamera" onclick="switchTab('camera')">📷 Live Camera</button>
         </div>
 
+        <!-- UPLOAD SECTION -->
+        <div class="upload-area" id="uploadArea">
+            <div class="upload-icon">🖼️</div>
+            <h2>Upload Your Image</h2>
+            <p>Drag & drop an image here or browse from your device</p>
+            <label for="imageInput" class="browse-btn">Choose Image</label>
+            <input type="file" id="imageInput" accept="image/*">
+            <div class="file-info" id="fileInfo">Supported formats: JPG, JPEG, PNG</div>
+        </div>
+
+        <!-- CAMERA SECTION -->
+        <div class="camera-area" id="cameraArea">
+            <video id="webcam" autoplay playsinline></video>
+            <div class="cam-controls">
+                <button class="secondary-btn" onclick="captureCamera()">📸 Take Photo</button>
+            </div>
+            <canvas id="cameraCanvas" style="display:none;"></canvas>
+        </div>
 
         <!-- IMAGE PREVIEW -->
         <div class="preview-section" id="previewSection">
-
             <h3>Image Preview</h3>
-
-            <img
-                id="imagePreview"
-                src=""
-                alt="Uploaded Image Preview"
-            >
-
+            <img id="imagePreview" src="" alt="Selected Preview">
         </div>
 
-
-        <!-- GENERATE -->
+        <!-- GENERATE BUTTON -->
         <div class="action-area">
-
-            <button
-                class="generate-btn"
-                id="generateBtn"
-                disabled
-            >
-                ✨ Generate Caption
-            </button>
-
+            <button class="generate-btn" id="generateBtn" disabled>✨ Generate Caption</button>
         </div>
 
-
-        <!-- LOADING -->
+        <!-- LOADING SPINNER -->
         <div class="loading" id="loading">
-
             <div class="spinner"></div>
-
-            <p>
-                AI is analyzing your image and generating a caption...
-            </p>
-
+            <p>AI is analyzing your image and generating a caption...</p>
         </div>
 
-
-        <!-- RESULT -->
+        <!-- RESULT CONTAINER -->
         <div class="result" id="result">
-
             <div class="result-header">
-
                 <h2>🤖 Generated Caption</h2>
-
-                <span class="ai-tag">
-                    AI Generated
-                </span>
-
+                <span class="ai-tag">BLIP Transformer</span>
             </div>
-
-            <div
-                class="caption-text"
-                id="captionText"
-            >
-            </div>
-
+            <div class="caption-text" id="captionText"></div>
             <div class="result-actions">
-
-                <button
-                    class="secondary-btn"
-                    onclick="copyCaption()"
-                >
-                    📋 Copy Caption
-                </button>
-
-                <button
-                    class="secondary-btn"
-                    onclick="resetApp()"
-                >
-                    🔄 Try Another Image
-                </button>
-
+                <button class="secondary-btn" onclick="copyCaption()">📋 Copy Caption</button>
+                <button class="secondary-btn" onclick="resetApp()">🔄 Try Another Image</button>
             </div>
-
         </div>
 
     </div>
-
 
     <!-- INFO CARDS -->
     <div class="info-section">
-
         <div class="info-card">
-
             <div class="icon">🧠</div>
-
-            <h3>Deep Learning</h3>
-
-            <p>
-                Uses VGG16 for visual feature extraction and an
-                LSTM-based neural network for generating captions.
-            </p>
-
+            <h3>BLIP Model</h3>
+            <p>State-of-the-art vision-language model pre-trained for high accuracy contextual captioning.</p>
         </div>
-
-
         <div class="info-card">
-
-            <div class="icon">⚡</div>
-
-            <h3>Simple & Fast</h3>
-
-            <p>
-                Upload an image and receive an automatically generated
-                caption through an easy-to-use web interface.
-            </p>
-
+            <div class="icon">📷</div>
+            <h3>Live Input</h3>
+            <p>Direct camera integration allowing instant snapshot-to-caption processing.</p>
         </div>
-
-
-        <div class="info-card">
-
-            <div class="icon">🔬</div>
-
-            <h3>AI Research Project</h3>
-
-            <p>
-                This project demonstrates the application of Computer
-                Vision and Natural Language Processing together.
-            </p>
-
-        </div>
-
     </div>
-
 </div>
 
-
-<!-- FOOTER -->
 <footer>
-
-    <p>
-        VisionAI — AI Image Caption Generator
-    </p>
-
-    <p style="margin-top:8px;">
-        Built with Python • TensorFlow • VGG16 • LSTM • Flask
-    </p>
-
+    <p>VisionAI — AI Image Caption Generator</p>
+    <p style="margin-top:8px;">Built with Python • PyTorch • Transformers • Flask</p>
 </footer>
 
-
 <script>
+    const imageInput = document.getElementById("imageInput");
+    const uploadArea = document.getElementById("uploadArea");
+    const cameraArea = document.getElementById("cameraArea");
+    const imagePreview = document.getElementById("imagePreview");
+    const previewSection = document.getElementById("previewSection");
+    const fileInfo = document.getElementById("fileInfo");
+    const generateBtn = document.getElementById("generateBtn");
+    const loading = document.getElementById("loading");
+    const result = document.getElementById("result");
+    const captionText = document.getElementById("captionText");
+    const webcam = document.getElementById("webcam");
+    const cameraCanvas = document.getElementById("cameraCanvas");
 
-    // ============================================================
-    // GET ELEMENTS
-    // ============================================================
+    let currentImageData = null; 
+    let cameraStream = null;
 
-    const imageInput =
-        document.getElementById("imageInput");
+    // SWITCH TABS (UPLOAD vs CAMERA)
+    function switchTab(type) {
+        document.getElementById("tabUpload").classList.toggle("active", type === 'upload');
+        document.getElementById("tabCamera").classList.toggle("active", type === 'camera');
 
-    const uploadArea =
-        document.getElementById("uploadArea");
-
-    const imagePreview =
-        document.getElementById("imagePreview");
-
-    const previewSection =
-        document.getElementById("previewSection");
-
-    const fileInfo =
-        document.getElementById("fileInfo");
-
-    const generateBtn =
-        document.getElementById("generateBtn");
-
-    const loading =
-        document.getElementById("loading");
-
-    const result =
-        document.getElementById("result");
-
-    const captionText =
-        document.getElementById("captionText");
-
-
-    // ============================================================
-    // CLICK UPLOAD AREA
-    // ============================================================
-
-    uploadArea.addEventListener(
-        "click",
-        function(event) {
-
-            if (
-                event.target.tagName !== "LABEL"
-            ) {
-
-                imageInput.click();
-
-            }
-
+        if (type === 'upload') {
+            uploadArea.style.display = "block";
+            cameraArea.classList.remove("active");
+            stopCamera();
+        } else {
+            uploadArea.style.display = "none";
+            cameraArea.classList.add("active");
+            startCamera();
         }
-    );
-
-
-    // ============================================================
-    // IMAGE SELECTED
-    // ============================================================
-
-    imageInput.addEventListener(
-        "change",
-        function() {
-
-            const file =
-                this.files[0];
-
-            if (!file) {
-                return;
-            }
-
-            showImage(file);
-
-        }
-    );
-
-
-    // ============================================================
-    // DRAG OVER
-    // ============================================================
-
-    uploadArea.addEventListener(
-        "dragover",
-        function(event) {
-
-            event.preventDefault();
-
-            uploadArea.classList.add(
-                "dragover"
-            );
-
-        }
-    );
-
-
-    // ============================================================
-    // DRAG LEAVE
-    // ============================================================
-
-    uploadArea.addEventListener(
-        "dragleave",
-        function() {
-
-            uploadArea.classList.remove(
-                "dragover"
-            );
-
-        }
-    );
-
-
-    // ============================================================
-    // DROP IMAGE
-    // ============================================================
-
-    uploadArea.addEventListener(
-        "drop",
-        function(event) {
-
-            event.preventDefault();
-
-            uploadArea.classList.remove(
-                "dragover"
-            );
-
-            const file =
-                event.dataTransfer.files[0];
-
-
-            if (
-                file &&
-                file.type.startsWith("image/")
-            ) {
-
-                // Put dropped file into input
-                const dataTransfer =
-                    new DataTransfer();
-
-                dataTransfer.items.add(
-                    file
-                );
-
-                imageInput.files =
-                    dataTransfer.files;
-
-
-                showImage(file);
-
-            }
-
-        }
-    );
-
-
-    // ============================================================
-    // SHOW IMAGE PREVIEW
-    // ============================================================
-
-    function showImage(file) {
-
-        fileInfo.innerHTML =
-            "Selected: <strong>"
-            + file.name
-            + "</strong>";
-
-
-        const reader =
-            new FileReader();
-
-
-        reader.onload =
-            function(event) {
-
-                imagePreview.src =
-                    event.target.result;
-
-
-                previewSection.classList.add(
-                    "show"
-                );
-
-
-                generateBtn.disabled =
-                    false;
-
-
-                result.classList.remove(
-                    "show"
-                );
-
-
-                captionText.textContent =
-                    "";
-
-            };
-
-
-        reader.readAsDataURL(
-            file
-        );
-
     }
 
-
-    // ============================================================
-    // GENERATE CAPTION
-    // ============================================================
-
-    generateBtn.addEventListener(
-        "click",
-        async function() {
-
-            const file =
-                imageInput.files[0];
-
-
-            if (!file) {
-
-                alert(
-                    "Please select an image first."
-                );
-
-                return;
-
-            }
-
-
-            // Create FormData
-            const formData =
-                new FormData();
-
-
-            formData.append(
-                "image",
-                file
-            );
-
-
-            // UI state
-            generateBtn.disabled =
-                true;
-
-
-            loading.classList.add(
-                "show"
-            );
-
-
-            result.classList.remove(
-                "show"
-            );
-
-
-            captionText.textContent =
-                "";
-
-
-            try {
-
-                console.log(
-                    "Sending image to Flask..."
-                );
-
-
-                // Send image to Flask
-                const response =
-                    await fetch(
-                        "/predict",
-                        {
-
-                            method: "POST",
-
-                            body: formData
-
-                        }
-                    );
-
-
-                console.log(
-                    "Flask response status:",
-                    response.status
-                );
-
-
-                // Read JSON response
-                const data =
-                    await response.json();
-
-
-                console.log(
-                    "Flask response:",
-                    data
-                );
-
-
-                // Successful response
-                if (
-                    response.ok &&
-                    data.success
-                ) {
-
-
-                    // Show caption
-                    captionText.textContent =
-                        data.caption;
-
-
-                    // Show result box
-                    result.classList.add(
-                        "show"
-                    );
-
-
-                    // Scroll to result
-                    result.scrollIntoView({
-
-                        behavior: "smooth",
-
-                        block: "center"
-
-                    });
-
-
-                }
-
-                else {
-
-
-                    alert(
-
-                        data.error
-                        ||
-                        "Unable to generate caption."
-
-                    );
-
-                }
-
-
-            }
-
-            catch (error) {
-
-
-                console.error(
-                    "Frontend Error:",
-                    error
-                );
-
-
-                alert(
-
-                    "Error connecting to Flask server.\n\n"
-                    +
-                    "Please check the terminal for errors."
-
-                );
-
-            }
-
-
-            finally {
-
-
-                loading.classList.remove(
-                    "show"
-                );
-
-
-                generateBtn.disabled =
-                    false;
-
-
-            }
-
+    // WEBCAM LOGIC
+    async function startCamera() {
+        try {
+            cameraStream = await navigator.mediaDevices.getUserMedia({ video: true });
+            webcam.srcObject = cameraStream;
+        } catch (err) {
+            alert("Camera disconnected or unavailable. Switching to File Upload mode.");
+            switchTab('upload');
         }
-    );
+    }
 
+    function stopCamera() {
+        if (cameraStream) {
+            cameraStream.getTracks().forEach(track => track.stop());
+            cameraStream = null;
+        }
+    }
 
-    // ============================================================
-    // COPY CAPTION
-    // ============================================================
+    function captureCamera() {
+        cameraCanvas.width = webcam.videoWidth;
+        cameraCanvas.height = webcam.videoHeight;
+        const ctx = cameraCanvas.getContext("2d");
+        ctx.drawImage(webcam, 0, 0);
+        
+        currentImageData = cameraCanvas.toDataURL("image/jpeg");
+        imagePreview.src = currentImageData;
+        previewSection.classList.add("show");
+        generateBtn.disabled = false;
+        result.classList.remove("show");
+    }
+
+    // DRAG AND DROP & FILE UPLOAD LOGIC
+    uploadArea.addEventListener("click", (e) => {
+        if (e.target.tagName !== "LABEL") imageInput.click();
+    });
+
+    imageInput.addEventListener("change", function() {
+        if (this.files[0]) processFile(this.files[0]);
+    });
+
+    uploadArea.addEventListener("dragover", (e) => { e.preventDefault(); uploadArea.classList.add("dragover"); });
+    uploadArea.addEventListener("dragleave", () => uploadArea.classList.remove("dragover"));
+    uploadArea.addEventListener("drop", (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove("dragover");
+        if (e.dataTransfer.files[0]) processFile(e.dataTransfer.files[0]);
+    });
+
+    function processFile(file) {
+        currentImageData = file;
+        fileInfo.innerHTML = "Selected: <strong>" + file.name + "</strong>";
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            imagePreview.src = e.target.result;
+            previewSection.classList.add("show");
+            generateBtn.disabled = false;
+            result.classList.remove("show");
+        };
+        reader.readAsDataURL(file);
+    }
+
+    // GENERATE CAPTION
+    generateBtn.addEventListener("click", async function() {
+        if (!currentImageData) return alert("Please select or capture an image first.");
+
+        generateBtn.disabled = true;
+        loading.classList.add("show");
+        result.classList.remove("show");
+
+        try {
+            let response;
+            if (typeof currentImageData === "string") {
+                // Base64 JSON Payload (Camera Image)
+                response = await fetch("/predict", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        image_data: currentImageData
+                    })
+                });
+            } else {
+                // Multipart Form Data (File Upload)
+                const formData = new FormData();
+                formData.append("image", currentImageData);
+
+                response = await fetch("/predict", {
+                    method: "POST",
+                    body: formData
+                });
+            }
+
+            const data = await response.json();
+
+            if (response.ok && data.success) {
+                captionText.textContent = data.caption;
+                result.classList.add("show");
+                result.scrollIntoView({ behavior: "smooth", block: "center" });
+            } else {
+                alert(data.error || "Caption generation failed.");
+            }
+        } catch (err) {
+            console.error(err);
+            alert("Error connecting to server.");
+        } finally {
+            loading.classList.remove("show");
+            generateBtn.disabled = false;
+        }
+    });
 
     function copyCaption() {
-
-        const text =
-            captionText.textContent;
-
-
-        if (!text) {
-
-            return;
-
-        }
-
-
-        navigator.clipboard.writeText(
-            text
-        )
-        .then(
-            function() {
-
-                alert(
-                    "Caption copied to clipboard!"
-                );
-
-            }
-        )
-        .catch(
-            function() {
-
-                alert(
-                    "Unable to copy caption."
-                );
-
-            }
-        );
-
+        navigator.clipboard.writeText(captionText.textContent)
+            .then(() => alert("Caption copied to clipboard!"))
+            .catch(() => alert("Unable to copy caption."));
     }
-
-
-    // ============================================================
-    // RESET APP
-    // ============================================================
 
     function resetApp() {
-
-
-        // Clear input
-        imageInput.value =
-            "";
-
-
-        // Clear preview
-        imagePreview.src =
-            "";
-
-
-        // Reset file info
-        fileInfo.innerHTML =
-            "Supported formats: JPG, JPEG, PNG";
-
-
-        // Hide preview
-        previewSection.classList.remove(
-            "show"
-        );
-
-
-        // Hide result
-        result.classList.remove(
-            "show"
-        );
-
-
-        // Clear caption
-        captionText.textContent =
-            "";
-
-
-        // Disable generate button
-        generateBtn.disabled =
-            true;
-
-
-        // Scroll to upload
-        uploadArea.scrollIntoView({
-
-            behavior: "smooth",
-
-            block: "center"
-
-        });
-
+        imageInput.value = "";
+        imagePreview.src = "";
+        currentImageData = null;
+        fileInfo.innerHTML = "Supported formats: JPG, JPEG, PNG";
+        previewSection.classList.remove("show");
+        result.classList.remove("show");
+        generateBtn.disabled = true;
     }
-
 </script>
 
 </body>
